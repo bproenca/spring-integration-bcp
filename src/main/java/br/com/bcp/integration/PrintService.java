@@ -8,10 +8,8 @@ public class PrintService {
 	
 	public Message<String> print(Message<String> message) {
 		System.out.println(message.getPayload());
-		MessageHeaders headers = message.getHeaders();
-		System.out.println(headers);
-		
-		return MessageBuilder.withPayload("Return Message").setHeader("aa", "bb").build();
+		int messageNumber = (int) message.getHeaders().get("messageNumber");
+		return MessageBuilder.withPayload("[1] Sending reply for message " + messageNumber).setHeader("aa", "bb").build();
 	}
 
 }
