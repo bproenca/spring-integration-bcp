@@ -43,6 +43,8 @@ public class SpringIntegrationBcpApplication implements ApplicationRunner{
 		for (Future<Message<String>> future : futures) {
 			System.out.println("[2]" + future.get().getPayload());
 		}
+		
+		System.out.println("done");
 	}
 
 }
