@@ -34,6 +34,7 @@ public class SpringIntegrationBcpApplication implements ApplicationRunner{
 			Message<String> message = MessageBuilder
 					.withPayload("Printing message payload for " + i)
 					.setHeader("messageNumber", i)
+					.setPriority(i)
 					.build();
 			System.out.println("[0] Sending message " + i);
 			futures.add(gateway.print(message));
