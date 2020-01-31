@@ -2,16 +2,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:int="http://www.springframework.org/schema/integration"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-5.2.xsd">
 
 	<int:gateway 
 		service-interface="br.com.bcp.integration.PrinterGateway"
 		default-request-channel="inputChannel"></int:gateway>
-		
+	
+	<task:executor id="executor" pool-size="5"/>
+	
+	<int:publish-subscribe-channel id="inputChannel" task-executor="executor"/>
+	
+	<!--
+	Default = direct channel (send exactly one message to one of the services | round robin)
 	<int:channel id="inputChannel">
 		<int:dispatcher failover="false"/>
 	</int:channel>
+	 -->	
 	
 	<bean class="br.com.bcp.integration.PrintService" id="printService"/>
 	<bean class="br.com.bcp.integration.UppercasePrintService" id="uppercasePrintService"/>
