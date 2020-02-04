@@ -11,8 +11,13 @@
 		service-interface="br.com.bcp.integration.PrinterGateway"
 		default-request-channel="pollableChannel"></int:gateway>
 	
+	<bean id="interceptor" class="br.com.bcp.integration.CustomChannelInterceptor"></bean>
+	
 	<int:channel id="pollableChannel">
 		<int:queue capacity="10"/>
+		<int:interceptors>
+			<ref bean="interceptor"/>
+		</int:interceptors>
 	</int:channel>
 	
 	<int:bridge input-channel="pollableChannel" output-channel="inputChannel">
