@@ -11,10 +11,10 @@
 		service-interface="br.com.bcp.integration.PrinterGateway"
 		default-request-channel="inputChannel"></int:gateway>
 	
-	<int:payload-type-router input-channel="inputChannel">
-		<int:mapping type="java.lang.Integer" channel="intChannel"/>
-		<int:mapping type="java.lang.String" channel="strChannel"/>
-	</int:payload-type-router>
+	<int:header-value-router input-channel="inputChannel" header-name="routeHeader">
+		<int:mapping value="int" channel="intChannel"/>
+		<int:mapping value="str" channel="strChannel"/>
+	</int:header-value-router>
 	
 	<int:channel id="inputChannel"/>
 	
