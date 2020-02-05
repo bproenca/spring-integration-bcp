@@ -6,6 +6,6 @@ import org.springframework.messaging.Message;
 
 public interface PrinterGateway {
 	
-	public Future<Message<String>> print (Message<?> message);
+	public Future<Message<?>> print (Message<?> message);
 
 }
