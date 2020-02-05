@@ -11,16 +11,19 @@
 		service-interface="br.com.bcp.integration.PrinterGateway"
 		default-request-channel="inputChannel"></int:gateway>
 	
-	<int:recipient-list-router input-channel="inputChannel" >
+	<int:recipient-list-router input-channel="inputChannel" default-output-channel="defaultChannel">
 		<int:recipient selector-expression="payload.equals(5)" channel="intChannel"/>
-		<int:recipient channel="strChannel"/>
+		<int:recipient selector-expression="payload.equals(7)" channel="strChannel"/>
 	</int:recipient-list-router>
 	
+	<int:channel id="defaultChannel"></int:channel>
 	<int:channel id="inputChannel"/>
 	
 	<bean class="br.com.bcp.integration.PrintService" id="printService"/>
 	<bean class="br.com.bcp.integration.NumericPrintService" id="numericPrintService"/>
+	<bean class="br.com.bcp.integration.DefaultPrintService" id="defaultPrintService"/>
 	
-	<int:service-activator order="2" ref="numericPrintService" method="print" input-channel="intChannel"/>
-	<int:service-activator order="1" ref="printService" method="print" input-channel="strChannel"/>
+	<int:service-activator ref="numericPrintService" method="print" input-channel="intChannel"/>
+	<int:service-activator ref="printService" method="print" input-channel="strChannel"/>
+	<int:service-activator ref="defaultPrintService" method="print" input-channel="defaultChannel"/>
 </beans>
