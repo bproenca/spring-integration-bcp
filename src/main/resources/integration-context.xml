@@ -10,13 +10,11 @@
 	<int:gateway 
 		service-interface="br.com.bcp.integration.PrinterGateway"
 		default-request-channel="inputChannel"></int:gateway>
+
+	<bean id="customRouter" class="br.com.bcp.integration.CustomRouter"/>
 	
-	<int:recipient-list-router input-channel="inputChannel" default-output-channel="defaultChannel">
-		<int:recipient selector-expression="payload.equals(5)" channel="intChannel"/>
-		<int:recipient selector-expression="payload.equals(7)" channel="strChannel"/>
-	</int:recipient-list-router>
-	
-	<int:channel id="defaultChannel"></int:channel>
+	<int:router ref="customRouter" input-channel="inputChannel"/>
+	<int:channel id="defaultChannel"/>
 	<int:channel id="inputChannel"/>
 	
 	<bean class="br.com.bcp.integration.PrintService" id="printService"/>
