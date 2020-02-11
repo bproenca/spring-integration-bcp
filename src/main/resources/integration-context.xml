@@ -14,14 +14,11 @@
 	<bean id="customRouter" class="br.com.bcp.integration.CustomRouter"/>
 	
 	<int:router ref="customRouter" input-channel="inputChannel"/>
-	<int:channel id="defaultChannel"/>
 	<int:channel id="inputChannel"/>
 	
 	<bean class="br.com.bcp.integration.PrintService" id="printService"/>
 	<bean class="br.com.bcp.integration.NumericPrintService" id="numericPrintService"/>
-	<bean class="br.com.bcp.integration.DefaultPrintService" id="defaultPrintService"/>
 	
 	<int:service-activator ref="numericPrintService" method="print" input-channel="intChannel"/>
 	<int:service-activator ref="printService" method="print" input-channel="strChannel"/>
-	<int:service-activator ref="defaultPrintService" method="print" input-channel="defaultChannel"/>
 </beans>
