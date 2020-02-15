@@ -14,7 +14,9 @@
 	<int:channel id="inputChannel"/>
 	<int:channel id="outputChannel"/>
 	
-	<int:filter expression="payload.equals(4)" input-channel="inputChannel" output-channel="outputChannel"/>
+	<bean id="myFilter" class="br.com.bcp.integration.CustomFilter"/>
+	
+	<int:filter ref="myFilter" input-channel="inputChannel" output-channel="outputChannel"/>
 	
 	<bean class="br.com.bcp.integration.PrintService" id="printService"/>
 	
