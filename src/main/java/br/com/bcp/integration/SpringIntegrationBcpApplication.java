@@ -25,7 +25,7 @@ public class SpringIntegrationBcpApplication implements ApplicationRunner{
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		for (int i = 0; i < 10; i++) {
-			Message<?> message = MessageBuilder.withPayload(i).build();
+			Message<?> message = MessageBuilder.withPayload("bruno proenca").build();
 			gateway.print(message);
 		}		
 	}
