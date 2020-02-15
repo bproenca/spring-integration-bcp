@@ -13,9 +13,13 @@
 
 	<int:channel id="inputChannel"/>
 	<int:channel id="outputChannel"/>
+	<int:channel id="aggChannel"/>
 	
 	<bean id="customSplitter" class="br.com.bcp.integration.CustomSplitter"/>
-	<int:splitter ref="customSplitter" method="split" input-channel="inputChannel" output-channel="outputChannel"/>
+	<int:splitter ref="customSplitter" method="split" input-channel="inputChannel" output-channel="aggChannel"/>
+	
+	<bean id="customAggregator" class="br.com.bcp.integration.CustomAggregator"/>
+	<int:aggregator ref="customAggregator" input-channel="aggChannel" output-channel="outputChannel"/>
 	
 	<bean class="br.com.bcp.integration.PrintService" id="printService"/>
 	<int:service-activator ref="printService" method="print" input-channel="outputChannel"/>
