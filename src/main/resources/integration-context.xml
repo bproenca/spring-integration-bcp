@@ -7,16 +7,14 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-5.2.xsd">
 
-	<int:gateway 
-		service-interface="br.com.bcp.integration.PrinterGateway"
-		default-request-channel="inputChannel"></int:gateway>
+	<int:inbound-channel-adapter ref="personDirectoryService" method="findNewPeople" channel="registerChannel">
+		<int:poller fixed-rate="3000"/>
+	</int:inbound-channel-adapter>
 
-	<int:channel id="inputChannel"/>
-	<int:channel id="outputChannel"/>
+	<bean class="br.com.bcp.integration.PersonDirectoryService" id="personDirectoryService"/>
+	<bean class="br.com.bcp.integration.PersonRegistrationService" id="personRegistrationService"/>
 	
-	<int:service-activator ref="uppercaseService" method="execute" input-channel="inputChannel"/>
-	<bean class="br.com.bcp.integration.UppercaseService" id="uppercaseService"/>
-
-	<int:service-activator ref="printService" method="print" input-channel="outputChannel"/>
-	<bean class="br.com.bcp.integration.PrintService" id="printService"/>
+	<int:outbound-channel-adapter ref="personRegistrationService" method="registerEmail" channel="registerChannel"/>
+	
+	<int:channel id="registerChannel"/>
 </beans>
