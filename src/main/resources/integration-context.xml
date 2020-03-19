@@ -12,21 +12,11 @@
 		default-request-channel="inputChannel"></int:gateway>
 
 	<int:channel id="inputChannel"/>
-	<int:channel id="enricherChannel"/>
-	<int:channel id="requestChannel"/>
-	<int:channel id="filterChannel"/>
 	<int:channel id="outputChannel"/>
+	
+	<int:service-activator ref="uppercaseService" method="execute" input-channel="inputChannel"/>
+	<bean class="br.com.bcp.integration.UppercaseService" id="uppercaseService"/>
 
-	<bean class="br.com.bcp.integration.CustomService" id="customService"/>
-	<int:service-activator ref="customService" method="getPhoneNumber" input-channel="requestChannel"/>
-	
-	<int:enricher input-channel="inputChannel" request-channel="requestChannel" output-channel="enricherChannel">
-		<int:property name="phoneNumber" expression="payload"/>
-	</int:enricher>
-	
-	<int:header-filter header-names="privateKey" input-channel="enricherChannel" output-channel="filterChannel"/>
-	<int:object-to-json-transformer input-channel="filterChannel" output-channel="outputChannel"/>
-	
-	<bean class="br.com.bcp.integration.PrintService" id="printService"/>
 	<int:service-activator ref="printService" method="print" input-channel="outputChannel"/>
+	<bean class="br.com.bcp.integration.PrintService" id="printService"/>
 </beans>

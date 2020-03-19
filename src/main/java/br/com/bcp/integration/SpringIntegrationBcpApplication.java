@@ -26,7 +26,7 @@ public class SpringIntegrationBcpApplication implements ApplicationRunner{
 	public void run(ApplicationArguments args) throws Exception {
 		Person[] payloads = {new Person("bruno", "henrique"), new Person("felipe", "gabriel"), new Person("duda", "proenca")};
 		for (int i = 0; i < payloads.length; i++) {
-			Message<?> message = MessageBuilder.withPayload(payloads[i]).setHeader("privateKey", "12345").build();
+			Message<?> message = MessageBuilder.withPayload(payloads[i]).setHeader("replyChannel", "outputChannel").build();
 			gateway.print(message);
 		}		
 	}
