@@ -17,12 +17,29 @@
 	</int-file:inbound-channel-adapter>
 	
 	<int:channel id="inboundChannel"/>
+	<int:channel id="transformChannel"/>
+	<int:channel id="outboundChannel"/>
 	
+	<int-file:outbound-gateway
+		request-channel="transformChannel"
+		reply-channel="outboundChannel"
+		directory="file:src/test/write"
+		auto-create-directory="true"
+		mode="REPLACE"
+	/>
+	
+	<int-file:file-to-string-transformer input-channel="inboundChannel" output-channel="transformChannel"/>
+	
+	<bean id="filePrinter" class="br.com.bcp.integration.FilePrinter"/>
+	<int:service-activator ref="filePrinter" method="print" input-channel="outboundChannel"/>
+	
+	<!-- 
 	<int-file:outbound-channel-adapter
 		directory="file:src/test/write"
 		channel="inboundChannel"
 		auto-create-directory="true"
 		mode="APPEND">
 	</int-file:outbound-channel-adapter>
+	-->
 	
 </beans>
