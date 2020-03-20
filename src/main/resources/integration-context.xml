@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-5.2.xsd">
 
 	<int-file:inbound-channel-adapter 
-		directory="file:src/test"
+		directory="file:src/test/read"
 		filename-pattern="sample.txt"
 		channel="inboundChannel">
 		<int:poller fixed-rate="10000"/>
@@ -18,8 +18,11 @@
 	
 	<int:channel id="inboundChannel"/>
 	
-	<bean id="filePrinter" class="br.com.bcp.integration.FilePrinter"/>
-	
-	<int:service-activator ref="filePrinter" input-channel="inboundChannel"></int:service-activator>
+	<int-file:outbound-channel-adapter
+		directory="file:src/test/write"
+		channel="inboundChannel"
+		auto-create-directory="true"
+		mode="APPEND">
+	</int-file:outbound-channel-adapter>
 	
 </beans>
